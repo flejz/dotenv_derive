@@ -40,10 +40,7 @@ fn parse_field(field: &Field) -> Result<FieldBinding> {
         .ok_or_else(|| {
             Error::new_spanned(
                 &ident,
-                format!(
-                    "Bind: field `{}` missing #[env(\"VAR\")] attribute",
-                    ident
-                ),
+                format!("Bind: field `{}` missing #[env(\"VAR\")] attribute", ident),
             )
         })?;
 

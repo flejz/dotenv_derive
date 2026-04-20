@@ -54,10 +54,7 @@ use syn::{DeriveInput, parse_macro_input};
 pub fn derive_bind(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
-    let is_static = input
-        .attrs
-        .iter()
-        .any(|a| a.path().is_ident("env_static"));
+    let is_static = input.attrs.iter().any(|a| a.path().is_ident("env_static"));
 
     let bindings = match parse::parse_derive_input(&input) {
         Ok(b) => b,

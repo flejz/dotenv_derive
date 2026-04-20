@@ -1,5 +1,5 @@
 [package]
-name = "dotenv-derive"
+name = "dotenvy-derive"
 version = "0.15.0"
 edition = "2024"
 license = "MIT"
@@ -11,4 +11,4 @@ proc-macro = true
 syn = { version = "2", features = ["full"] }
 quote = "1"
 proc-macro2 = "1"
-dotenv_codegen = "0.15"
+dotenvy_macro = "0.15"

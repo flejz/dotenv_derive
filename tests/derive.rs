@@ -1,4 +1,4 @@
-use dotenv_derive::Bind;
+use dotenvy_derive::Bind;
 
 #[derive(Bind)]
 pub struct DefaultConfig {

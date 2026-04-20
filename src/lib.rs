@@ -7,7 +7,7 @@ use syn::{DeriveInput, parse_macro_input};
 /// Derives struct initialization from `.env` values at compile time.
 ///
 /// Each field must carry `#[dotenv("VAR_NAME")]` and be typed `&'static str`.
-/// The consumer crate must also depend on `dotenv_codegen`.
+/// The consumer crate must also depend on `dotenvy_macro`.
 ///
 /// # Modes
 ///

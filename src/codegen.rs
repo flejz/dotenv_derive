@@ -12,7 +12,7 @@ pub fn emit_default(struct_name: &Ident, bindings: &[FieldBinding]) -> TokenStre
         impl ::core::default::Default for #struct_name {
             fn default() -> Self {
                 #struct_name {
-                    #( #field_idents: ::dotenv_codegen::dotenv!(#env_keys), )*
+                    #( #field_idents: ::dotenvy_macro::dotenv!(#env_keys), )*
                 }
             }
         }
@@ -26,7 +26,7 @@ pub fn emit_static(struct_name: &Ident, bindings: &[FieldBinding]) -> TokenStrea
     quote! {
         impl #struct_name {
             pub const INSTANCE: #struct_name = #struct_name {
-                #( #field_idents: ::dotenv_codegen::dotenv!(#env_keys), )*
+                #( #field_idents: ::dotenvy_macro::dotenv!(#env_keys), )*
             };
         }
     }

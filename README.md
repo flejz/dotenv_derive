@@ -1,4 +1,4 @@
-# dotenv-derive
+# dotenvy-derive
 
 Proc macro that derives struct initialization from `.env` files at **compile time** via [`dotenv_codegen`](https://crates.io/crates/dotenv_codegen).
 
@@ -8,14 +8,14 @@ Add to `Cargo.toml`:
 
 ```toml
 [dependencies]
-dotenv-derive = "0.15"
-dotenv_codegen = "0.15"
+dotenvy-derive = "0.15"
+dotenvy_macro = "0.15"
 ```
 
 ### `impl Default` (standard)
 
 ```rust
-use dotenv_derive::Bind;
+use dotenvy_derive::Bind;
 
 #[derive(Bind)]
 pub struct ZoomConfig {
@@ -46,7 +46,7 @@ impl Default for ZoomConfig {
 Add `#[dotenv_static]` to emit a compile-time constant instead:
 
 ```rust
-use dotenv_derive::Bind;
+use dotenvy_derive::Bind;
 
 #[derive(Bind)]
 #[dotenv_static]

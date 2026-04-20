@@ -10,7 +10,7 @@ license = "MIT"
 name = "dotenvy-derive"
 readme = "README.md"
 repository = "https://github.com/flejz/dotenvy_derive"
-version = "0.15.7"
+version = "0.15.8"
 
 [lib]
 proc-macro = true

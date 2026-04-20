@@ -1,6 +1,6 @@
 # dotenvy-derive
 
-Proc macro that derives struct initialization from `.env` files at **compile time** via [`dotenv_codegen`](https://crates.io/crates/dotenv_codegen).
+Proc macro that derives struct initialization from `.env` files at **compile time** via [`dotenvy_macro`](https://crates.io/crates/dotenvy_macro).
 
 ## Usage
 
@@ -18,24 +18,24 @@ dotenvy_macro = "0.15"
 use dotenvy_derive::Bind;
 
 #[derive(Bind)]
-pub struct ZoomConfig {
-    #[dotenv("ZOOM_APP_KEY")]
-    pub app_key: &'static str,
-    #[dotenv("ZOOM_APP_SECRET")]
-    pub app_secret: &'static str,
+pub struct MailConfig {
+    #[env("MAIL_HOST")]
+    pub host: &'static str,
+    #[env("MAIL_API_KEY")]
+    pub api_key: &'static str,
 }
 
-let config = ZoomConfig::default();
+let config = MailConfig::default();
 ```
 
 Generates:
 
 ```rust
-impl Default for ZoomConfig {
+impl Default for MailConfig {
     fn default() -> Self {
-        ZoomConfig {
-            app_key: ::dotenv_codegen::dotenv!("ZOOM_APP_KEY"),
-            app_secret: ::dotenv_codegen::dotenv!("ZOOM_APP_SECRET"),
+        MailConfig {
+            host: ::dotenvy_macro::dotenv!("MAIL_HOST"),
+            api_key: ::dotenvy_macro::dotenv!("MAIL_API_KEY"),
         }
     }
 }
@@ -43,33 +43,33 @@ impl Default for ZoomConfig {
 
 ### `pub const INSTANCE` (static)
 
-Add `#[dotenv_static]` to emit a compile-time constant instead:
+Add `#[env_static]` to emit a compile-time constant instead:
 
 ```rust
 use dotenvy_derive::Bind;
 
 #[derive(Bind)]
-#[dotenv_static]
-pub struct ZoomConfig {
-    #[dotenv("ZOOM_APP_KEY")]
-    pub app_key: &'static str,
-    #[dotenv("ZOOM_APP_SECRET")]
-    pub app_secret: &'static str,
+#[env_static]
+pub struct MailConfig {
+    #[env("MAIL_HOST")]
+    pub host: &'static str,
+    #[env("MAIL_API_KEY")]
+    pub api_key: &'static str,
 }
 
 // Use in const context:
 pub const CONFIG: AppConfig = AppConfig {
-    zoom: ZoomConfig::INSTANCE,
+    mail: MailConfig::INSTANCE,
 };
 ```
 
 Generates:
 
 ```rust
-impl ZoomConfig {
-    pub const INSTANCE: ZoomConfig = ZoomConfig {
-        app_key: ::dotenv_codegen::dotenv!("ZOOM_APP_KEY"),
-        app_secret: ::dotenv_codegen::dotenv!("ZOOM_APP_SECRET"),
+impl MailConfig {
+    pub const INSTANCE: MailConfig = MailConfig {
+        host: ::dotenvy_macro::dotenv!("MAIL_HOST"),
+        api_key: ::dotenvy_macro::dotenv!("MAIL_API_KEY"),
     };
 }
 ```
@@ -78,7 +78,7 @@ impl ZoomConfig {
 
 - All fields must be `&'static str` — `dotenv!` returns `&'static str`
 - A `.env` file must exist at the crate root at build time
-- Consumer crate must depend on `dotenv_codegen` directly
+- Consumer crate must depend on `dotenvy_macro` directly
 
 ## Error handling
 
@@ -86,8 +86,8 @@ The macro emits a compile error for:
 
 - Non-struct types (enums, unions)
 - Tuple or unit structs
-- Fields missing `#[dotenv("VAR_NAME")]`
-- Malformed `#[dotenv(...)]` attribute
+- Fields missing `#[env("VAR_NAME")]`
+- Malformed `#[env(...)]` attribute
 
 ## License
 

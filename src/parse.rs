@@ -33,24 +33,24 @@ fn parse_field(field: &Field) -> Result<FieldBinding> {
         .clone()
         .ok_or_else(|| Error::new_spanned(field, "Bind: unnamed fields not supported"))?;
 
-    let dotenv_attr = field
+    let env_attr = field
         .attrs
         .iter()
-        .find(|a| a.path().is_ident("dotenv"))
+        .find(|a| a.path().is_ident("env"))
         .ok_or_else(|| {
             Error::new_spanned(
                 &ident,
                 format!(
-                    "Bind: field `{}` missing #[dotenv(\"VAR\")] attribute",
+                    "Bind: field `{}` missing #[env(\"VAR\")] attribute",
                     ident
                 ),
             )
         })?;
 
-    let lit: LitStr = dotenv_attr.parse_args().map_err(|_| {
+    let lit: LitStr = env_attr.parse_args().map_err(|_| {
         Error::new_spanned(
-            dotenv_attr,
-            "Bind: #[dotenv(...)] expects a string literal, e.g. #[dotenv(\"VAR_NAME\")]",
+            env_attr,
+            "Bind: #[env(...)] expects a string literal, e.g. #[env(\"VAR_NAME\")]",
         )
     })?;
 

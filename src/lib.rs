@@ -6,7 +6,7 @@ use syn::{DeriveInput, parse_macro_input};
 
 /// Derives struct initialization from `.env` values at compile time.
 ///
-/// Each field must carry `#[dotenv("VAR_NAME")]` and be typed `&'static str`.
+/// Each field must carry `#[env("VAR_NAME")]` and be typed `&'static str`.
 /// The consumer crate must also depend on `dotenvy_macro`.
 ///
 /// # Modes
@@ -15,30 +15,32 @@ use syn::{DeriveInput, parse_macro_input};
 ///
 /// ```rust,ignore
 /// #[derive(Bind)]
-/// pub struct ZoomConfig {
-///     #[dotenv("ZOOM_APP_KEY")]
-///     pub app_key: &'static str,
-///     #[dotenv("ZOOM_APP_SECRET")]
-///     pub app_secret: &'static str,
+/// pub struct MailConfig {
+///     #[env("MAIL_HOST")]
+///     pub host: &'static str,
+///     #[env("MAIL_API_KEY")]
+///     pub api_key: &'static str,
 /// }
 ///
-/// let cfg = ZoomConfig::default();
+/// let cfg = MailConfig::default();
 /// ```
 ///
-/// ## `pub const INSTANCE` (with `#[dotenv_static]`)
+/// ## `pub const INSTANCE` (with `#[env_static]`)
 ///
-/// Add `#[dotenv_static]` to emit a compile-time constant usable in `const` contexts:
+/// Add `#[env_static]` to emit a compile-time constant usable in `const` contexts:
 ///
 /// ```rust,ignore
 /// #[derive(Bind)]
-/// #[dotenv_static]
-/// pub struct ZoomConfig {
-///     #[dotenv("ZOOM_APP_KEY")]
-///     pub app_key: &'static str,
+/// #[env_static]
+/// pub struct MailConfig {
+///     #[env("MAIL_HOST")]
+///     pub host: &'static str,
+///     #[env("MAIL_API_KEY")]
+///     pub api_key: &'static str,
 /// }
 ///
 /// pub const CONFIG: AppConfig = AppConfig {
-///     zoom: ZoomConfig::INSTANCE,
+///     mail: MailConfig::INSTANCE,
 /// };
 /// ```
 ///
@@ -46,16 +48,16 @@ use syn::{DeriveInput, parse_macro_input};
 ///
 /// Compile error if:
 /// - Applied to an enum, union, tuple struct, or unit struct
-/// - Any field is missing `#[dotenv("VAR_NAME")]`
-/// - `#[dotenv(...)]` argument is not a string literal
-#[proc_macro_derive(Bind, attributes(dotenv, dotenv_static))]
+/// - Any field is missing `#[env("VAR_NAME")]`
+/// - `#[env(...)]` argument is not a string literal
+#[proc_macro_derive(Bind, attributes(env, env_static))]
 pub fn derive_bind(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
     let is_static = input
         .attrs
         .iter()
-        .any(|a| a.path().is_ident("dotenv_static"));
+        .any(|a| a.path().is_ident("env_static"));
 
     let bindings = match parse::parse_derive_input(&input) {
         Ok(b) => b,

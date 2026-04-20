@@ -2,18 +2,18 @@ use dotenvy_derive::Bind;
 
 #[derive(Bind)]
 pub struct DefaultConfig {
-    #[dotenv("TEST_APP_KEY")]
+    #[env("TEST_APP_KEY")]
     pub app_key: &'static str,
-    #[dotenv("TEST_APP_SECRET")]
+    #[env("TEST_APP_SECRET")]
     pub app_secret: &'static str,
 }
 
 #[derive(Bind)]
-#[dotenv_static]
+#[env_static]
 pub struct StaticConfig {
-    #[dotenv("TEST_APP_KEY")]
+    #[env("TEST_APP_KEY")]
     pub app_key: &'static str,
-    #[dotenv("TEST_APP_SECRET")]
+    #[env("TEST_APP_SECRET")]
     pub app_secret: &'static str,
 }
 
